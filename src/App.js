@@ -51,7 +51,6 @@ class App extends Component {
     }
 
     startTrickle() {
-        return;
         this.timer = setInterval(() => {
             let { data, cachedData, cacheIndex } = this.state;
 
@@ -82,7 +81,6 @@ class App extends Component {
 
     render() {
         let { data, selectedTag, cachedData } = this.state;
-        data = cachedData;
 
         return (
             <div className="App">
