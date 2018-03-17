@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 
 import { groupByFunc } from "./util";
+import Bar from "./Bar";
 
 class Barchart extends Component {
     xScale = d3.scaleBand().paddingInner(0.1);
@@ -25,22 +26,31 @@ class Barchart extends Component {
     }
 
     render() {
-        const { x, y, data, groupBy, color } = this.props;
+        const {
+            x,
+            y,
+            data,
+            groupBy,
+            color,
+            selectedTag,
+            selectTag
+        } = this.props;
 
         const _data = groupByFunc(data, groupBy);
 
         return (
             <g transform={`translate(${x}, ${y})`}>
                 {_data.map((d, i) => (
-                    <rect
+                    <Bar
                         key={d.tag}
+                        d={d}
                         x={this.xScale(d.tag)}
                         y={-this.yScale(d.amount)}
                         width={this.xScale.bandwidth()}
                         height={this.yScale(d.amount)}
-                        style={{
-                            fill: color(d)
-                        }}
+                        selectTag={selectTag}
+                        selected={selectedTag === d.tag}
+                        color={color}
                     />
                 ))}
             </g>

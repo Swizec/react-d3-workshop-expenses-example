@@ -14,7 +14,8 @@ import Barchart from "./Barchart";
 class App extends Component {
     state = {
         data: [],
-        cachedData: []
+        cachedData: [],
+        selectedTag: null
     };
     colorScale = chroma.scale("PuBu");
     colorIndex = scaleOrdinal();
@@ -50,6 +51,7 @@ class App extends Component {
     }
 
     startTrickle() {
+        return;
         this.timer = setInterval(() => {
             let { data, cachedData, cacheIndex } = this.state;
 
@@ -76,8 +78,11 @@ class App extends Component {
         return this.colorScale(this.colorIndex(tag));
     }
 
+    selectTag = tag => this.setState({ selectedTag: tag });
+
     render() {
-        const { data } = this.state;
+        let { data, selectedTag, cachedData } = this.state;
+        data = cachedData;
 
         return (
             <div className="App">
@@ -85,14 +90,17 @@ class App extends Component {
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title">A pie chart with transitions</h1>
                 </header>
+                <h3>{selectedTag || "<hover something>"}</h3>
                 <p className="App-intro">
-                    <svg width="100%" height="600">
+                    <svg width="1024" height="600">
                         <Piechart
                             data={data}
                             color={d => this.color(d.data.tag)}
                             groupBy={d => d.Tags.split(", ").sort()}
                             x={250}
                             y={300}
+                            selectTag={this.selectTag}
+                            selectedTag={selectedTag}
                         />
                         <Barchart
                             data={data}
@@ -102,6 +110,8 @@ class App extends Component {
                             y={500}
                             width={400}
                             height={400}
+                            selectTag={this.selectTag}
+                            selectedTag={selectedTag}
                         />
                     </svg>
                 </p>

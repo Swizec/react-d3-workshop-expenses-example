@@ -12,14 +12,28 @@ class Piechart extends Component {
         .padAngle(0.005);
 
     render() {
-        const { data, groupBy, x, y, color } = this.props;
+        const {
+            data,
+            groupBy,
+            x,
+            y,
+            color,
+            selectTag,
+            selectedTag
+        } = this.props;
 
         const _data = groupByFunc(data, groupBy);
 
         return (
             <g transform={`translate(${x}, ${y})`}>
                 {this.pie(_data).map((d, i) => (
-                    <Arc d={d} color={color(d)} key={d.data.tag} />
+                    <Arc
+                        d={d}
+                        color={color(d)}
+                        key={d.data.tag}
+                        selectTag={selectTag}
+                        selected={selectedTag === d.data.tag}
+                    />
                 ))}
                 <text x="0" textAnchor="middle">
                     {data.length}
