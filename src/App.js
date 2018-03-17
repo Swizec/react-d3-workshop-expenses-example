@@ -9,10 +9,12 @@ import "./App.css";
 import { groupByFunc } from "./util";
 
 import Piechart from "./Piechart";
+import Barchart from "./Barchart";
 
 class App extends Component {
     state = {
-        data: []
+        data: [],
+        cachedData: []
     };
     colorScale = chroma.scale("PuBu");
     colorIndex = scaleOrdinal();
@@ -89,8 +91,17 @@ class App extends Component {
                             data={data}
                             color={d => this.color(d.data.tag)}
                             groupBy={d => d.Tags.split(", ").sort()}
+                            x={100}
+                            y={300}
+                        />
+                        <Barchart
+                            data={data}
+                            color={d => this.color(d.data.tag)}
+                            groupBy={d => d.Tags.split(", ").sort()}
                             x={400}
                             y={300}
+                            width={400}
+                            height={400}
                         />
                     </svg>
                 </p>
