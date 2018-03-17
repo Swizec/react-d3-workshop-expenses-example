@@ -86,20 +86,20 @@ class App extends Component {
                     <h1 className="App-title">A pie chart with transitions</h1>
                 </header>
                 <p className="App-intro">
-                    <svg width="800" height="600">
+                    <svg width="100%" height="600">
                         <Piechart
                             data={data}
                             color={d => this.color(d.data.tag)}
                             groupBy={d => d.Tags.split(", ").sort()}
-                            x={100}
+                            x={250}
                             y={300}
                         />
                         <Barchart
                             data={data}
-                            color={d => this.color(d.data.tag)}
+                            color={d => this.color(d.tag)}
                             groupBy={d => d.Tags.split(", ").sort()}
-                            x={400}
-                            y={300}
+                            x={600}
+                            y={500}
                             width={400}
                             height={400}
                         />
