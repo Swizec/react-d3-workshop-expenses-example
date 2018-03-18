@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { csv as d3Csv } from "d3-request";
+import { csv as d3Csv } from "d3-fetch";
 import { scaleOrdinal } from "d3";
 import * as chroma from "chroma-js";
 import _ from "lodash";
@@ -21,33 +21,27 @@ class App extends Component {
     colorIndex = scaleOrdinal();
 
     componentDidMount() {
-        d3Csv(
-            "transport.csv",
-            d => ({
+        d3Csv("transport.csv").then(data => {
+            const cachedData = data.map(d => ({
                 ...d,
                 amount: Number(d["In main currency"].replace(",", ""))
-            }),
-            (error, cachedData) => {
-                if (error) {
-                    console.error(error);
-                }
+            }));
 
-                const tags = Object.keys(
-                    groupByFunc(cachedData, d => d.Tags.split(", ").sort())
-                );
+            const tags = Object.keys(
+                groupByFunc(cachedData, d => d.Tags.split(", ").sort())
+            );
 
-                this.colorScale.colors(tags);
-                this.colorIndex
-                    .domain(tags)
-                    .range(tags.map((_, i) => i / tags.length));
+            this.colorScale.colors(tags);
+            this.colorIndex
+                .domain(tags)
+                .range(tags.map((_, i) => i / tags.length));
 
-                this.setState({
-                    cachedData,
-                    cacheIndex: 0
-                });
-                this.startTrickle();
-            }
-        );
+            this.setState({
+                cachedData,
+                cacheIndex: 0
+            });
+            this.startTrickle();
+        });
     }
 
     startTrickle() {
